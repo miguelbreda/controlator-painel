@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar conta | Controlator</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --green: #174b3a;
+            --green-dark: #103729;
+            --green-soft: #e8f3ed;
+            --background: #f4f7f5;
+            --text: #1c2923;
+            --muted: #7b8981;
+            --border: #e1e9e4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: var(--background);
+            font-family: "DM Sans", sans-serif;
+            color: var(--text);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .brand-icon {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: var(--green);
+            color: white;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .brand h1 {
+            font-family: "Manrope", sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .brand p {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .card {
+            padding: 34px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(20, 55, 39, 0.06);
+        }
+
+        .card h2 {
+            font-family: "Manrope", sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            margin: 7px 0 25px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            height: 46px;
+            padding: 0 13px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(23, 75, 58, 0.09);
+        }
+
+        .hint {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .message {
+            display: none;
+            padding: 12px;
+            margin-bottom: 18px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            color: #a33d36;
+            background: #fff0ee;
+            border: 1px solid #f5d5d1;
+        }
+
+        .message.success {
+            color: #087a59;
+            background: var(--green-soft);
+            border: 1px solid #ccebdd;
+        }
+
+        .submit-button {
+            width: 100%;
+            height: 48px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 9px;
+            background: var(--green);
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            background: var(--green-dark);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .login-link {
+            margin-top: 23px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .login-link a {
+            color: var(--green);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .footer {
+            margin-top: 24px;
+            text-align: center;
+            color: #9aa69f;
+            font-size: 11px;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 26px 21px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header class="brand">
+            <div class="brand-icon">C</div>
+            <h1>Controlator</h1>
+            <p>Gestão inteligente para o seu negócio</p>
+        </header>
+
+        <section class="card">
+
+            <h2>Criar sua conta</h2>
+            <p class="subtitle">Preencha os dados para começar.</p>
+
+            <div id="errorMessage" class="message error" role="alert"></div>
+            <div id="successMessage" class="message success" role="status"></div>
+
+            <form id="registerForm">
+
+                <input type="hidden" id="csrfToken">
+
+                <div class="form-group">
+                    <label for="username">Nome de usuário</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        minlength="3"
+                        maxlength="80"
+                        placeholder="Escolha um usuário"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        maxlength="150"
+                        placeholder="seu@email.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        minlength="12"
+                        maxlength="72"
+                        placeholder="Crie uma senha"
+                        autocomplete="new-password"
+                        required
+                    >
+                    <p class="hint">Utilize pelo menos 12 caracteres.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar senha</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Digite a senha novamente"
+                        autocomplete="new-password"
+                        required
+                    >
+                </div>
+
+                <button
+                    type="submit"
+                    id="registerButton"
+                    class="submit-button"
+                    disabled
+                >
+                    Carregando...
+                </button>
+
+            </form>
+
+            <div class="login-link">
+                Já possui uma conta?
+                <a href="/login.html">Fazer login</a>
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            © 2026 Controlator. Todos os direitos reservados.
+        </footer>
+
+    </main>
+
+    <script src="/js/register.js" defer></script>
+
+</body>
+</html>

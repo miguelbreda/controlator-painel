@@ -1,0 +1,329 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Controlator</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --green: #174b3a;
+            --green-dark: #103729;
+            --green-soft: #e8f3ed;
+            --background: #f4f7f5;
+            --text: #1c2923;
+            --muted: #7b8981;
+            --border: #e1e9e4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: var(--background);
+            font-family: "DM Sans", sans-serif;
+            color: var(--text);
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .brand-icon {
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            background: var(--green);
+            color: white;
+            font-family: "Manrope", sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .brand h1 {
+            font-family: "Manrope", sans-serif;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .brand p {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .login-card {
+            padding: 36px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 12px 40px rgba(20, 55, 39, 0.06);
+        }
+
+        .login-header {
+            margin-bottom: 27px;
+        }
+
+        .login-header h2 {
+            font-family: "Manrope", sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .login-header p {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .message {
+            display: none;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            color: #a33d36;
+            background: #fff0ee;
+            border: 1px solid #f5d5d1;
+        }
+
+        .message.success {
+            color: #087a59;
+            background: var(--green-soft);
+            border: 1px solid #ccebdd;
+        }
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 47px;
+            padding: 0 14px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            outline: none;
+            background: #fff;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 14px;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(23, 75, 58, 0.09);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 75px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 13px;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: var(--green);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .login-button {
+            width: 100%;
+            height: 48px;
+            margin-top: 7px;
+            border: none;
+            border-radius: 9px;
+            background: var(--green);
+            color: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-button:hover:not(:disabled) {
+            background: var(--green-dark);
+        }
+
+        .login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .register-link {
+            margin-top: 24px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .register-link a {
+            color: var(--green);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: #9aa69f;
+            font-size: 11px;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 27px 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="login-container">
+
+        <header class="brand">
+            <div class="brand-icon">C</div>
+            <h1>Controlator</h1>
+            <p>Gestão inteligente para o seu negócio</p>
+        </header>
+
+        <section class="login-card">
+
+            <div class="login-header">
+                <h2>Bem-vindo de volta</h2>
+                <p>Entre com suas credenciais para continuar.</p>
+            </div>
+
+            <div id="errorMessage" class="message error" role="alert">
+                Usuário ou senha inválidos. Verifique suas credenciais.
+            </div>
+
+            <div id="logoutMessage" class="message success" role="status">
+                Você saiu da sua conta com segurança.
+            </div>
+
+            <div id="systemMessage" class="message error" role="alert"></div>
+
+            <form id="loginForm" action="/login" method="POST">
+
+                <input type="hidden" name="_csrf" id="csrfToken">
+
+                <div class="form-group">
+                    <label for="username">Usuário ou e-mail</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Digite seu usuário ou e-mail"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Senha</label>
+
+                    <div class="password-wrapper">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Digite sua senha"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="toggle-password"
+                            id="togglePassword"
+                        >
+                            Mostrar
+                        </button>
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    class="login-button"
+                    id="loginButton"
+                    disabled
+                >
+                    Carregando...
+                </button>
+
+            </form>
+
+            <div class="register-link">
+                Ainda não possui uma conta?
+                <a href="/register.html">Criar conta</a>
+            </div>
+
+        </section>
+
+        <footer class="footer">
+            © 2026 Controlator. Todos os direitos reservados.
+        </footer>
+
+    </main>
+
+    <script src="/js/login.js" defer></script>
+
+</body>
+</html>

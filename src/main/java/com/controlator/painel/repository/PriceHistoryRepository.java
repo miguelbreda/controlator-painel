@@ -1,0 +1,10 @@
+package com.controlator.painel.repository;
+
+import com.controlator.painel.model.PriceHistory;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
+
+public interface PriceHistoryRepository extends JpaRepository<PriceHistory, Long> {
+    List<PriceHistory> findAllByProductIdOrderByChangedAtDesc(Long productId);
+    boolean existsByProduct_Id(Long productId);
+}

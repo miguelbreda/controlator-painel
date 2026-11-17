@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controlator | Gestão inteligente</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/dashboard.js" defer></script>
+</head>
+<body>
+<div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-symbol">
+                <svg viewBox="0 0 40 40" fill="none">
+                    <path d="M10 12L20 6L30 12V28L20 34L10 28V12Z"
+                          stroke="currentColor" stroke-width="2.5"/>
+                    <path d="M15 20L19 24L26 16"
+                          stroke="currentColor" stroke-width="2.5"
+                          stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="brand-name">
+                <strong>controlator</strong>
+                <span>BUSINESS MANAGEMENT</span>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <span class="nav-label">WORKSPACE</span>
+            <nav class="navigation">
+                <a href="#dashboard" class="nav-item active" data-view="dashboard">
+                    <span class="nav-icon">◫</span>
+                    <span>Visão geral</span>
+                    <span class="active-indicator"></span>
+                </a>
+                <a href="#products" class="nav-item" data-view="products">
+                    <span class="nav-icon">▤</span>
+                    <span>Produtos</span>
+                </a>
+                <a href="#stock" class="nav-item" data-view="stock">
+                    <span class="nav-icon">▦</span>
+                    <span>Estoque</span>
+                </a>
+                <a href="#prices" class="nav-item" data-view="prices">
+                    <span class="nav-icon">↗</span>
+                    <span>Preços</span>
+                </a>
+            </nav>
+        </div>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-user">
+                <div class="user-avatar" id="sidebarUserAvatar">?</div>
+                <div class="user-info">
+                    <strong id="sidebarUsername">Carregando...</strong>
+                    <span id="sidebarUserRole">Carregando...</span>
+                </div>
+                <span class="user-menu">•••</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+        <header class="topbar">
+            <button class="mobile-menu" id="mobileMenu" type="button"
+                    aria-label="Abrir menu">☰</button>
+
+            <div class="breadcrumb">
+                <span>Workspace</span>
+                <span class="breadcrumb-separator">/</span>
+                <strong id="breadcrumbCurrent">Visão geral</strong>
+            </div>
+
+            <div class="topbar-actions">
+                <div class="system-status">
+                    <span class="status-dot"></span>
+                    Sistema operacional
+                </div>
+                <div class="topbar-divider"></div>
+                <div class="topbar-avatar" id="topbarUserAvatar">?</div>
+            </div>
+        </header>
+
+        <div class="page-container" id="dashboard-view">
+
+            <!-- PAGE INTRO -->
+            <section class="page-intro">
+                <div>
+                    <div class="eyebrow">
+                        <span class="eyebrow-line"></span>
+                        BUSINESS OVERVIEW
+                    </div>
+                    <h1>Visão geral<span>.</span></h1>
+                    <p>
+                        Acompanhe o desempenho e tenha controle
+                        completo da sua operação.
+                    </p>
+                </div>
+                <div class="intro-date">
+                    <span class="date-label">SEU PAINEL</span>
+                    <strong>Controlator</strong>
+                    <span class="date-subtitle">Gestão em um só lugar</span>
+                </div>
+            </section>
+
+            <!-- METRICS -->
+            <section class="metrics-grid">
+                <article class="metric-card metric-primary">
+                    <div class="metric-top">
+                        <span class="metric-label">Produtos cadastrados</span>
+                        <span class="metric-icon">▤</span>
+                    </div>
+                    <div class="metric-value" id="totalProducts">0</div>
+                    <div class="metric-bottom">
+                        <span class="metric-description">
+                            Total de produtos registrados
+                        </span>
+                        <span class="metric-decoration">01</span>
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <span class="metric-label">Unidades em estoque</span>
+                        <span class="metric-icon green-icon">▦</span>
+                    </div>
+                    <div class="metric-value" id="totalUnits">0</div>
+                    <div class="metric-bottom">
+                        <span class="metric-description">
+                            Quantidade disponível
+                        </span>
+                        <span class="metric-decoration">02</span>
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <span class="metric-label">Valor do inventário</span>
+                        <span class="metric-icon purple-icon">R$</span>
+                    </div>
+                    <div class="metric-value money" id="inventoryValue">
+                        R$ 0,00
+                    </div>
+                    <div class="metric-bottom">
+                        <span class="metric-description">
+                            Valor estimado dos produtos
+                        </span>
+                        <span class="metric-decoration">03</span>
+                    </div>
+                </article>
+
+                <article class="metric-card">
+                    <div class="metric-top">
+                        <span class="metric-label">Estoque baixo</span>
+                        <span class="metric-icon orange-icon">!</span>
+                    </div>
+                    <div class="metric-value" id="lowStockCount">0</div>
+                    <div class="metric-bottom">
+                        <span class="metric-description">
+                            Produtos que precisam de atenção
+                        </span>
+                        <span class="metric-decoration">04</span>
+                    </div>
+                </article>
+            </section>
+
+            <!-- CONTENT -->
+            <section class="dashboard-grid">
+
+                <!-- PRODUCTS TABLE -->
+                <article class="surface products-panel" id="products-preview">
+                    <div class="surface-header">
+                        <div>
+                            <div class="section-overline">INVENTÁRIO</div>
+                            <h2>Seus produtos</h2>
+                            <p>Visão geral dos produtos cadastrados.</p>
+                        </div>
+                        <a href="#products" class="view-all" data-go="products">
+                            Ver inventário <span>↗</span>
+                        </a>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>PRODUTO</th>
+                                <th>CATEGORIA</th>
+                                <th>PREÇO</th>
+                                <th>ESTOQUE</th>
+                            </tr>
+                            </thead>
+                            <tbody id="productsTable">
+                            <tr>
+                                <td colspan="4" class="loading-cell">
+                                    Carregando produtos...
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-footer">
+                        <span>Dados atualizados diretamente do inventário.</span>
+                        <span class="live-indicator">
+                            <i></i> LIVE DATA
+                        </span>
+                    </div>
+                </article>
+
+                <!-- LOW STOCK -->
+                <article class="surface stock-panel" id="stock-preview">
+                    <div class="surface-header">
+                        <div>
+                            <div class="section-overline">MONITORAMENTO</div>
+                            <h2>Requer atenção</h2>
+                            <p>Produtos com estoque reduzido.</p>
+                        </div>
+                        <span class="alert-icon">!</span>
+                    </div>
+
+                    <div class="low-stock-list" id="lowStockList">
+                        <p class="empty-message">Carregando...</p>
+                    </div>
+
+                    <div class="table-footer">
+                        <span>Limite de estoque baixo: 5 unidades</span>
+                    </div>
+                </article>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="page-footer">
+                <span>CONTROLATOR © 2026</span>
+                <span>Desenvolvido para uma gestão melhor.</span>
+            </footer>
+        </div>
+
+        <!-- PRODUCTS MODULE -->
+        <section class="page-container module-page view-hidden" id="products-view">
+            <section class="page-intro">
+                <div>
+                    <div class="eyebrow">
+                        <span class="eyebrow-line"></span>
+                        INVENTORY MANAGEMENT
+                    </div>
+                    <h1>Produtos<span>.</span></h1>
+                    <p>Cadastre, pesquise e mantenha seu catálogo organizado.</p>
+                </div>
+                <button class="primary-button" id="openProductDialog" type="button">
+                    ＋ Novo produto
+                </button>
+            </section>
+
+            <section class="surface management-panel">
+                <div class="management-toolbar">
+                    <div>
+                        <h2>Inventário de produtos</h2>
+                        <p id="productCount">Carregando produtos...</p>
+                    </div>
+                    <input type="search" id="productSearch" class="search-input"
+                           placeholder="Pesquisar por nome, código ou categoria...">
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>PRODUTO</th>
+                            <th>CÓDIGO</th>
+                            <th>CATEGORIA</th>
+                            <th>PREÇO</th>
+                            <th>ESTOQUE</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                        </thead>
+                        <tbody id="managementProductsTable">
+                        <tr>
+                            <td colspan="6" class="loading-cell">Carregando...</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+
+        <!-- STOCK MODULE -->
+        <section class="page-container module-page view-hidden" id="stock-view">
+            <section class="page-intro">
+                <div>
+                    <div class="eyebrow">
+                        <span class="eyebrow-line"></span>
+                        STOCK CONTROL
+                    </div>
+                    <h1>Estoque<span>.</span></h1>
+                    <p>Registre entradas, saídas e acompanhe o histórico de movimentações.</p>
+                </div>
+                <button class="primary-button" id="openStockDialog" type="button">
+                    ＋ Nova movimentação
+                </button>
+            </section>
+
+            <section class="surface management-panel">
+                <div class="management-toolbar">
+                    <div>
+                        <h2>Posição de estoque</h2>
+                        <p id="stockCount">Produtos cadastrados</p>
+                    </div>
+                    <input type="search" id="stockSearch" class="search-input"
+                           placeholder="Pesquisar produto...">
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>PRODUTO</th>
+                            <th>CÓDIGO</th>
+                            <th>ESTOQUE ATUAL</th>
+                            <th>SITUAÇÃO</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                        </thead>
+                        <tbody id="stockProductsTable">
+                        <tr>
+                            <td colspan="5" class="loading-cell">Carregando...</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="surface history-panel">
+                <div class="surface-header">
+                    <div>
+                        <div class="section-overline">ACTIVITY LOG</div>
+                        <h2>Histórico de movimentações</h2>
+                        <p id="stockHistoryTitle">
+                            Selecione um produto para consultar o histórico.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>DATA</th>
+                            <th>PRODUTO</th>
+                            <th>TIPO</th>
+                            <th>QUANTIDADE</th>
+                        </tr>
+                        </thead>
+                        <tbody id="stockHistoryTable">
+                        <tr>
+                            <td colspan="4" class="empty-cell">
+                                Nenhum produto selecionado.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+
+        <!-- PRICES MODULE -->
+        <section class="page-container module-page view-hidden" id="prices-view">
+            <section class="page-intro">
+                <div>
+                    <div class="eyebrow">
+                        <span class="eyebrow-line"></span>
+                        PRICE MANAGEMENT
+                    </div>
+                    <h1>Preços<span>.</span></h1>
+                    <p>Atualize valores e mantenha um registro das alterações.</p>
+                </div>
+                <button class="primary-button" data-go="products" type="button">
+                    Ver produtos
+                </button>
+            </section>
+
+            <section class="surface management-panel">
+                <div class="management-toolbar">
+                    <div>
+                        <h2>Preços dos produtos</h2>
+                        <p id="priceCount">Carregando produtos...</p>
+                    </div>
+                    <input type="search" id="priceSearch" class="search-input"
+                           placeholder="Pesquisar produto...">
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>PRODUTO</th>
+                            <th>CÓDIGO</th>
+                            <th>PREÇO ATUAL</th>
+                            <th>ESTOQUE</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                        </thead>
+                        <tbody id="priceProductsTable">
+                        <tr>
+                            <td colspan="5" class="loading-cell">Carregando...</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="surface history-panel">
+                <div class="surface-header">
+                    <div>
+                        <div class="section-overline">PRICE LOG</div>
+                        <h2>Histórico de preços</h2>
+                        <p id="priceHistoryTitle">
+                            Selecione um produto para consultar as alterações.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>DATA</th>
+                            <th>PRODUTO</th>
+                            <th>PREÇO ANTERIOR</th>
+                            <th>PREÇO NOVO</th>
+                        </tr>
+                        </thead>
+                        <tbody id="priceHistoryTable">
+                        <tr>
+                            <td colspan="4" class="empty-cell">
+                                Nenhum produto selecionado.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </section>
+
+        <!-- PRODUCT CREATE / EDIT DIALOG -->
+        <dialog id="productDialog" class="app-dialog">
+            <form id="productForm">
+                <div class="dialog-header">
+                    <div>
+                        <div class="section-overline">PRODUCT DETAILS</div>
+                        <h2 id="productDialogTitle">Novo produto</h2>
+                        <p>Informe os dados básicos do produto.</p>
+                    </div>
+                    <button type="button" class="close-dialog"
+                            data-close="productDialog" aria-label="Fechar">×</button>
+                </div>
+
+                <label for="productName">Nome do produto</label>
+                <input id="productName" maxlength="120" required
+                       placeholder="Ex.: Teclado mecânico">
+
+                <label for="productCode">Código</label>
+                <input id="productCode" maxlength="50" required
+                       placeholder="Ex.: TEC001">
+
+                <label for="productCategory">Categoria</label>
+                <input id="productCategory" maxlength="80" required
+                       placeholder="Ex.: Periféricos">
+
+                <div class="form-row">
+                    <div>
+                        <label for="productPrice">Preço (R$)</label>
+                        <input id="productPrice" type="number" min="0.01"
+                               step="0.01" required placeholder="199.90">
+                    </div>
+                    <div>
+                        <label for="productStock">Estoque inicial</label>
+                        <input id="productStock" type="number" min="0"
+                               step="1" required placeholder="10">
+                    </div>
+                </div>
+
+                <p class="form-hint" id="productEditHint" hidden>
+                    Na edição, preço e estoque são gerenciados nos módulos próprios
+                    para preservar o histórico.
+                </p>
+
+                <p id="productFormMessage" class="form-message" aria-live="polite"></p>
+
+                <div class="dialog-actions">
+                    <button type="button" class="secondary-button"
+                            data-close="productDialog">Cancelar</button>
+                    <button type="submit" class="primary-button" id="saveProduct">
+                        Cadastrar produto
+                    </button>
+                </div>
+            </form>
+        </dialog>
+
+        <!-- STOCK MOVEMENT DIALOG -->
+        <dialog id="stockDialog" class="app-dialog">
+            <form id="stockForm">
+                <div class="dialog-header">
+                    <div>
+                        <div class="section-overline">STOCK MOVEMENT</div>
+                        <h2>Nova movimentação</h2>
+                        <p>Registre uma entrada ou saída de unidades.</p>
+                    </div>
+                    <button type="button" class="close-dialog"
+                            data-close="stockDialog" aria-label="Fechar">×</button>
+                </div>
+
+                <label for="stockProduct">Produto</label>
+                <select id="stockProduct" required></select>
+
+                <label for="stockType">Tipo de movimentação</label>
+                <select id="stockType" required>
+                    <option value="entry">Entrada</option>
+                    <option value="exit">Saída</option>
+                </select>
+
+                <label for="stockQuantity">Quantidade</label>
+                <input id="stockQuantity" type="number" min="1" step="1"
+                       required placeholder="Ex.: 5">
+
+                <p id="stockFormMessage" class="form-message" aria-live="polite"></p>
+
+                <div class="dialog-actions">
+                    <button type="button" class="secondary-button"
+                            data-close="stockDialog">Cancelar</button>
+                    <button type="submit" class="primary-button" id="saveStock">
+                        Registrar movimentação
+                    </button>
+                </div>
+            </form>
+        </dialog>
+
+        <!-- PRICE DIALOG -->
+        <dialog id="priceDialog" class="app-dialog">
+            <form id="priceForm">
+                <div class="dialog-header">
+                    <div>
+                        <div class="section-overline">PRICE UPDATE</div>
+                        <h2>Alterar preço</h2>
+                        <p id="priceProductLabel">Atualize o preço do produto.</p>
+                    </div>
+                    <button type="button" class="close-dialog"
+                            data-close="priceDialog" aria-label="Fechar">×</button>
+                </div>
+
+                <input type="hidden" id="priceProductId">
+
+                <label for="newProductPrice">Novo preço (R$)</label>
+                <input id="newProductPrice" type="number" min="0.01"
+                       step="0.01" required placeholder="199.90">
+
+                <p id="priceFormMessage" class="form-message" aria-live="polite"></p>
+
+                <div class="dialog-actions">
+                    <button type="button" class="secondary-button"
+                            data-close="priceDialog">Cancelar</button>
+                    <button type="submit" class="primary-button" id="savePrice">
+                        Salvar novo preço
+                    </button>
+                </div>
+            </form>
+        </dialog>
+
+        <div id="toastRegion" class="toast-region" aria-live="polite"></div>
+    </main>
+</div>
+</body>
+</html>
